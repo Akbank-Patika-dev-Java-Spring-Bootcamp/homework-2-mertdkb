@@ -1,6 +1,8 @@
-package com.dikbiyik.ws.entity.product;
+package com.dikbiyik.ws.entity.comment;
 
 import com.dikbiyik.ws.entity.base.BaseEntity;
+import com.dikbiyik.ws.entity.product.Product;
+import com.dikbiyik.ws.entity.user.User;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,6 +27,10 @@ public class Comment extends BaseEntity {
     private String commentBody;
 
     @ManyToOne
-    @JoinColumn(name="PRODUCT_ID", nullable=false)
+    @JoinColumn(name="PRODUCT_ID")
     private Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private User user;
 }

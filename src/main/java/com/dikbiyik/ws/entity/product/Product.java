@@ -3,6 +3,7 @@ package com.dikbiyik.ws.entity.product;
 import java.util.List;
 
 import com.dikbiyik.ws.entity.base.BaseEntity;
+import com.dikbiyik.ws.entity.comment.Comment;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;

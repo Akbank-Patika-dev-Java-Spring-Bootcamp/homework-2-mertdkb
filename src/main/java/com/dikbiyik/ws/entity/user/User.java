@@ -1,7 +1,12 @@
 package com.dikbiyik.ws.entity.user;
 
-import com.dikbiyik.ws.entity.base.BaseEntity;
+import java.util.List;
 
+import com.dikbiyik.ws.entity.base.BaseEntity;
+import com.dikbiyik.ws.entity.comment.Comment;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -9,6 +14,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
@@ -47,4 +53,8 @@ public class User extends BaseEntity{
     @Column(name = "USER_TYPE")
     @Enumerated(EnumType.STRING)
     private AppUserType userType;
+
+    @JsonIgnoreProperties
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Comment> comments;
 }
