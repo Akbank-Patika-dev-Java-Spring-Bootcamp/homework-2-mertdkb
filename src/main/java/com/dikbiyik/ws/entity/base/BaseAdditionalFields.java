@@ -1,4 +1,4 @@
-package com.dikbiyik.ws.base;
+package com.dikbiyik.ws.entity.base;
 
 import java.time.LocalDateTime;
 
@@ -11,10 +11,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BaseAdditionalFields {
-    @Column(name = "ID_CUSTOMER_CREATED_BY")
+    @Column(name = "ID_USER_CREATED_BY")
     private Long createdBy;
   
-    @Column(name = "ID_CUSTOMER_UPDATE_BY")
+    @Column(name = "ID_USER_UPDATE_BY")
     private Long updatedBy;
   
     @Column(name = "CREATE_DATE")

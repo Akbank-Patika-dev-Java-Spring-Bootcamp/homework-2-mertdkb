@@ -1,6 +1,6 @@
-package com.dikbiyik.ws.user;
+package com.dikbiyik.ws.entity.user;
 
-import com.dikbiyik.ws.base.BaseEntity;
+import com.dikbiyik.ws.entity.base.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,7 +18,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "USER")
+@Table(name = "APPUSER")
 @Getter
 @Setter
 public class User extends BaseEntity{ 

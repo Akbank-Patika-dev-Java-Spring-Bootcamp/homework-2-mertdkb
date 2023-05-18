@@ -1,4 +1,4 @@
-package com.dikbiyik.ws.base;
+package com.dikbiyik.ws.entity.base;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +12,7 @@ import jakarta.persistence.MappedSuperclass;
 @Setter
 @MappedSuperclass
 public abstract class BaseEntity implements Serializable, Cloneable, BaseEntityModel {
+    
     @Embedded
     private BaseAdditionalFields baseAdditionalFields;
 }

@@ -1,4 +1,4 @@
-package com.dikbiyik.ws.user;
+package com.dikbiyik.ws.entity.user;
 
 public enum AppUserType {
     APPUSER,
