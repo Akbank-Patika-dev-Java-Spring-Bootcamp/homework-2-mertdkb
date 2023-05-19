@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.dikbiyik.ws.base.BaseAdditionalFields;
 import com.dikbiyik.ws.base.service.BaseService;
 import com.dikbiyik.ws.entity.user.User;
 import com.dikbiyik.ws.entity.user.dto.DeleteUserRequestDto;
@@ -47,7 +46,7 @@ public class AppUserService extends BaseService<User, UserRepository> {
     }
 
     public UpdateUserResponseDto updateUser(Long id, UpdateUserRequestDto updateUserRequestDto) {
-        User user = userRepository.findById(id).orElseThrow();
+        User user = this.findByIdWithControl(id);
         user = userMapper.updateUserRequestDtoToUser(updateUserRequestDto);
         user.setId(id);
         user.setBaseAdditionalFields(updateBaseAdditionalFields());
@@ -63,45 +62,4 @@ public class AppUserService extends BaseService<User, UserRepository> {
         this.delete(userInDb);
     }
 
-    @Override
-    public void delete(User entity) {
-        super.delete(entity);
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        super.deleteById(id);
-    }
-
-    @Override
-    public List<User> findAll() {
-        return super.findAll();
-    }
-
-    @Override
-    public Optional<User> findById(Long id) {
-        return super.findById(id);
-    }
-
-    @Override
-    public User findByIdWithControl(Long id) {
-        return super.findByIdWithControl(id);
-    }
-
-    @Override
-    public boolean isExist(Long id) {
-        return super.isExist(id);
-    }
-
-    @Override
-    public User save(User entity) {
-        return super.save(entity);
-    }
-
-    @Override
-    public BaseAdditionalFields updateBaseAdditionalFields() {
-        return super.updateBaseAdditionalFields();
-    }
-
 }
-//gerek yok knks :DD

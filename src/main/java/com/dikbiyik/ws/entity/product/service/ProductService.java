@@ -1,14 +1,16 @@
 package com.dikbiyik.ws.entity.product.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.dikbiyik.ws.base.service.BaseService;
 import com.dikbiyik.ws.entity.product.Product;
-import com.dikbiyik.ws.entity.product.dto.ProductSaveDtoRequest;
-import com.dikbiyik.ws.entity.product.dto.ProductSaveDtoResponse;
+import com.dikbiyik.ws.entity.product.dto.ProductGetResponeDto;
+import com.dikbiyik.ws.entity.product.dto.ProductSaveRequestDto;
+import com.dikbiyik.ws.entity.product.dto.ProductSaveResponseDto;
+import com.dikbiyik.ws.entity.product.dto.ProductUpdateRequestDto;
+import com.dikbiyik.ws.entity.product.dto.ProductUpdateResponseDto;
 import com.dikbiyik.ws.entity.product.mapper.ProductMapper;
 import com.dikbiyik.ws.entity.product.repository.ProductRepository;
 
@@ -22,50 +24,27 @@ public class ProductService extends BaseService<Product, ProductRepository> {
         this.productMapper = productMapper;
     }
 
-    public ProductSaveDtoResponse saveProduct(ProductSaveDtoRequest productSaveDtoRequest){
+    public ProductSaveResponseDto saveProduct(ProductSaveRequestDto productSaveDtoRequest){
         return productMapper.productToProductSaveDtoResponse(this.save(productMapper.productSaveRequestDtoToProduct(productSaveDtoRequest)));
     }
+
+    public ProductGetResponeDto getProductById(Long id){
+        return productMapper.productToProductGetResponseDto(this.findByIdWithControl(id));
+    }
+
+    public List<ProductGetResponeDto> getAllProducts(){
+        return productMapper.productsToProductGetResponseDtos(this.findAll());
+    }
+
+    public ProductUpdateResponseDto updateProduct(Long id, ProductUpdateRequestDto requestDto){
+        Product productInDb = this.findByIdWithControl(id);
+        Product product = productMapper.productUpdateRequestDtoToProduct(requestDto);
+        product.setId(id);
+        product.setBaseAdditionalFields(this.updateBaseAdditionalFields());
+        product.setProductName(productInDb.getProductName());
+        product.setComments(productInDb.getComments());
+        this.save(product);
+        return productMapper.productToProductUpdateDtoResponse(product);
+    }
     
-
-    @Override
-    public void delete(Product entity) {
-        // TODO Auto-generated method stub
-        super.delete(entity);
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        // TODO Auto-generated method stub
-        super.deleteById(id);
-    }
-
-    @Override
-    public List<Product> findAll() {
-        // TODO Auto-generated method stub
-        return super.findAll();
-    }
-
-    @Override
-    public Optional<Product> findById(Long id) {
-        // TODO Auto-generated method stub
-        return super.findById(id);
-    }
-
-    @Override
-    public Product findByIdWithControl(Long id) {
-        // TODO Auto-generated method stub
-        return super.findByIdWithControl(id);
-    }
-
-    @Override
-    public boolean isExist(Long id) {
-        // TODO Auto-generated method stub
-        return super.isExist(id);
-    }
-
-    @Override
-    public Product save(Product entity) {
-        // TODO Auto-generated method stub
-        return super.save(entity);
-    }
 }
