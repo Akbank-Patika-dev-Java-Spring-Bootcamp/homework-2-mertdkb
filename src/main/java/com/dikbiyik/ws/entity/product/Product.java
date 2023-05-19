@@ -2,9 +2,9 @@ package com.dikbiyik.ws.entity.product;
 
 import java.util.List;
 
-import com.dikbiyik.ws.entity.base.BaseEntity;
+import com.dikbiyik.ws.base.BaseEntity;
 import com.dikbiyik.ws.entity.comment.Comment;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -34,11 +34,10 @@ public class Product extends BaseEntity {
     @Column(name = "PRODUCT_NAME", nullable = false)
     private String productName;
 
-    @NotBlank
     @Column(name = "PRICE", nullable = false)
-    private int Price;
+    private Integer price;
 
-    @JsonIgnoreProperties
+    @JsonIgnore
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
