@@ -9,8 +9,9 @@ import org.springframework.stereotype.Service;
 import com.dikbiyik.ws.base.BaseAdditionalFields;
 import com.dikbiyik.ws.base.service.BaseService;
 import com.dikbiyik.ws.entity.comment.Comment;
-import com.dikbiyik.ws.entity.comment.dto.CommentPostDtoRequest;
-import com.dikbiyik.ws.entity.comment.dto.CommentPostDtoResponse;
+import com.dikbiyik.ws.entity.comment.dto.CommentGetResponseDto;
+import com.dikbiyik.ws.entity.comment.dto.CommentPostRequestDto;
+import com.dikbiyik.ws.entity.comment.dto.CommentPostResponseDto;
 import com.dikbiyik.ws.entity.comment.mapper.CommentMapper;
 import com.dikbiyik.ws.entity.comment.repository.CommentRepository;
 import com.dikbiyik.ws.entity.product.Product;
@@ -34,7 +35,7 @@ public class CommentService extends BaseService<Comment, CommentRepository>{
         this.userRepository = userRepository;
     }
 
-    public CommentPostDtoResponse postComment(CommentPostDtoRequest dtoRequest){
+    public CommentPostResponseDto postComment(CommentPostRequestDto dtoRequest){
         Product product = productRepository.findById(dtoRequest.productId()).orElseThrow();
         User user = userRepository.findById(dtoRequest.userId()).orElseThrow();
 
@@ -45,45 +46,21 @@ public class CommentService extends BaseService<Comment, CommentRepository>{
         return commentMapper.commentToCommentPostDtoResponse(this.save(comment));
     }
 
-    @Override
-    public void delete(Comment entity) {
-        // TODO Auto-generated method stub
-        super.delete(entity);
+    public void deleteComment(Long id){
+        this.deleteById(id);
     }
 
-    @Override
-    public void deleteById(Long id) {
-        // TODO Auto-generated method stub
-        super.deleteById(id);
+    //users comments
+    public List<CommentGetResponseDto> getAllUserCommentsByUserId(Long id){
+        User user = userRepository.findById(id).orElseThrow();
+        return commentMapper.commentsToCommentGetResponseDtos(user.getComments());
     }
 
-    @Override
-    public List<Comment> findAll() {
-        // TODO Auto-generated method stub
-        return super.findAll();
+    //products comment
+    public List<CommentGetResponseDto> getAllProductCommentsByProductId(Long id){
+        Product product = productRepository.findById(id).orElseThrow();
+        return commentMapper.commentsToCommentGetResponseDtos(product.getComments());
     }
 
-    @Override
-    public Optional<Comment> findById(Long id) {
-        // TODO Auto-generated method stub
-        return super.findById(id);
-    }
 
-    @Override
-    public Comment findByIdWithControl(Long id) {
-        // TODO Auto-generated method stub
-        return super.findByIdWithControl(id);
-    }
-
-    @Override
-    public boolean isExist(Long id) {
-        // TODO Auto-generated method stub
-        return super.isExist(id);
-    }
-
-    @Override
-    public Comment save(Comment entity) {
-        // TODO Auto-generated method stub
-        return super.save(entity);
-    }
 }
