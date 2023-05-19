@@ -1,4 +1,4 @@
-package com.dikbiyik.ws.entity.base;
+package com.dikbiyik.ws.base;
 
 public interface BaseEntityModel {
     Long getId();

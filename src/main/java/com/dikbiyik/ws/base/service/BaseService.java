@@ -1,4 +1,4 @@
-package com.dikbiyik.ws.entity.base.service;
+package com.dikbiyik.ws.base.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -7,16 +7,23 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import com.dikbiyik.ws.entity.base.BaseAdditionalFields;
-import com.dikbiyik.ws.entity.base.BaseEntity;
+import com.dikbiyik.ws.base.BaseAdditionalFields;
+import com.dikbiyik.ws.base.BaseEntity;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class BaseService<E extends BaseEntity, R extends JpaRepository<E, Long>> {
+public abstract class BaseService<E extends BaseEntity, R extends JpaRepository<E, Long>> {
     
     private final R repository;
+
+    public BaseAdditionalFields updateBaseAdditionalFields(){
+      BaseAdditionalFields baseAdditionalFields = new BaseAdditionalFields();
+      baseAdditionalFields.setUpdateDate(LocalDateTime.now());
+
+      return baseAdditionalFields;
+    }
 
     public E save(E entity){
 
@@ -61,4 +68,5 @@ public class BaseService<E extends BaseEntity, R extends JpaRepository<E, Long>>
       public boolean isExist(Long id){
         return repository.existsById(id);
       }
+      
 }

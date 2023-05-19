@@ -1,4 +1,4 @@
-package com.dikbiyik.ws.entity.base;
+package com.dikbiyik.ws.base;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -2,9 +2,9 @@ package com.dikbiyik.ws.entity.user;
 
 import java.util.List;
 
-import com.dikbiyik.ws.entity.base.BaseEntity;
+import com.dikbiyik.ws.base.BaseEntity;
 import com.dikbiyik.ws.entity.comment.Comment;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -54,7 +54,7 @@ public class User extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private AppUserType userType;
 
-    @JsonIgnoreProperties
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @JsonIgnore
     private List<Comment> comments;
 }
