@@ -39,7 +39,7 @@ public class Product extends BaseEntity {
     private Integer price;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private List<Comment> comments;
 
 }

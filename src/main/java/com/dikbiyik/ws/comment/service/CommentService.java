@@ -26,7 +26,7 @@ public class CommentService extends BaseService<Comment, CommentRepository>{
 
     private final UserRepository userRepository;
 
-    public CommentService(CommentRepository commentRepository, CommentMapper commentMapper, ProductRepository productRepository, UserRepository userRepository){
+    public CommentService(CommentRepository commentRepository, ProductRepository productRepository, UserRepository userRepository){
         super(commentRepository);
         this.productRepository = productRepository;
         this.userRepository = userRepository;
@@ -56,6 +56,11 @@ public class CommentService extends BaseService<Comment, CommentRepository>{
     public List<Comment> getAllProductCommentsByProductId(Long id){
         Product product = productRepository.findById(id).orElseThrow();
         return product.getComments();
+    }
+
+    public void deleteComment(Long id) {
+        Comment comment = super.findByIdWithControl(id);
+        super.delete(comment);
     }
 
 

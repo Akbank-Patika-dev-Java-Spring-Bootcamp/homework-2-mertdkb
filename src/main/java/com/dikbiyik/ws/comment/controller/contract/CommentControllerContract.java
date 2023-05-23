@@ -13,4 +13,6 @@ public interface CommentControllerContract {
     List<CommentGetResponseDto> getAllCommentsOfUser(Long userid);
 
     List<CommentGetResponseDto> getAllCommentsOfProduct(Long productid);
+
+    void deleteComment(Long id);
 }

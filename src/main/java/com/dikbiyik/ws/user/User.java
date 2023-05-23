@@ -36,7 +36,7 @@ public class User extends BaseEntity{
     private Long id;
 
     @NotBlank
-    @Column(name = "USERNAME", nullable = false)
+    @Column(name = "USERNAME", nullable = false, unique = true)
     private String username;
 
     @NotNull
@@ -44,11 +44,11 @@ public class User extends BaseEntity{
     private String password;
 
     @NotNull
-    @Column(name = "PHONE_NUMBER", nullable = false)
+    @Column(name = "PHONE_NUMBER", nullable = false, unique = true)
     private String phoneNumber;
 
     @Email
-    @Column(name = "EMAIL")
+    @Column(name = "EMAIL", unique = true)
     private String email;
     
     @Column(name = "USER_TYPE")
