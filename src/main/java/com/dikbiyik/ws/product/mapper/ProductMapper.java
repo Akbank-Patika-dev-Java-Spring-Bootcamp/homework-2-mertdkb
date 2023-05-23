@@ -1,7 +1,6 @@
 package com.dikbiyik.ws.product.mapper;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.mapstruct.Mapper;
 
