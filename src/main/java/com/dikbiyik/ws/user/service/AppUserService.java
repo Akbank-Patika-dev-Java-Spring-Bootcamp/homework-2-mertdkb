@@ -1,65 +1,50 @@
 package com.dikbiyik.ws.user.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 
+import com.dikbiyik.ws.base.BaseAdditionalFields;
 import com.dikbiyik.ws.base.service.BaseService;
 import com.dikbiyik.ws.user.User;
-import com.dikbiyik.ws.user.dto.DeleteUserRequestDto;
-import com.dikbiyik.ws.user.dto.GetUserResponseDto;
-import com.dikbiyik.ws.user.dto.UpdateUserRequestDto;
-import com.dikbiyik.ws.user.dto.UpdateUserResponseDto;
-import com.dikbiyik.ws.user.dto.UserSaveRequestDto;
-import com.dikbiyik.ws.user.dto.UserSaveResponseDto;
-import com.dikbiyik.ws.user.mapper.UserMapper;
 import com.dikbiyik.ws.user.repository.UserRepository;
 
 @Service
 public class AppUserService extends BaseService<User, UserRepository> {
-
-    private final UserMapper userMapper;
-
     private final UserRepository userRepository;
-
-    public AppUserService(UserMapper userMapper, UserRepository userRepository) {
+    
+    public AppUserService(UserRepository userRepository) {
         super(userRepository);
-        this.userMapper = userMapper;
         this.userRepository = userRepository;
     }
 
-    public UserSaveResponseDto save(UserSaveRequestDto userSaveDtoRequest) {
-        return userMapper.userToUserSaveDtoResponse(this.save(userMapper.userSaveRequestDtoToUser(userSaveDtoRequest)));
+    public User updateUser(Long id, User user) {
+
+        User userInDB = this.findByIdWithControl(id);
+        BaseAdditionalFields baseAdditionalFields = user.getBaseAdditionalFields();
+
+        if (baseAdditionalFields == null) {
+            baseAdditionalFields = updateBaseAdditionalFields();
+        }
+
+        userInDB.setBaseAdditionalFields(baseAdditionalFields);
+        userInDB.setId(id);
+        userInDB.setUsername(user.getUsername());
+        userInDB.setPassword(user.getPassword());
+        userInDB.setEmail(user.getEmail());
+        userInDB.setPhoneNumber(user.getPhoneNumber());
+        userInDB.setUserType(user.getUserType());
+        
+        super.save(userInDB);
+
+        return userInDB;
     }
 
-    public GetUserResponseDto getUserById(Long id) {
-        return userMapper.userToGetUserResponseDto(this.findByIdWithControl(id));
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
-    public GetUserResponseDto getUserByUsername(String username) {
-        return userMapper.userToGetUserResponseDto(userRepository.findByUsername(username));
+    public User findByUsernameAndPhoneNumber(String username, String phoneNumber) {
+        return userRepository.findByUsernameAndPhoneNumber(username, phoneNumber);
     }
 
-    public List<GetUserResponseDto> getAllUsers() {
-        return userMapper.usersToGetUserDtoResponses(this.findAll());
-    }
-
-    public UpdateUserResponseDto updateUser(Long id, UpdateUserRequestDto updateUserRequestDto) {
-        User user = this.findByIdWithControl(id);
-        user = userMapper.updateUserRequestDtoToUser(updateUserRequestDto);
-        user.setId(id);
-        user.setBaseAdditionalFields(updateBaseAdditionalFields());
-        userRepository.save(user);
-
-        return userMapper.userToUpdateUserResponseDto(user);
-    }
-
-    public void deleteUser(DeleteUserRequestDto userRequestDto) {
-
-        User userInDb = userRepository.findByUsernameAndPhoneNumber(userRequestDto.username(),
-                userRequestDto.phoneNumber());
-        this.delete(userInDb);
-    }
-
+    
 }

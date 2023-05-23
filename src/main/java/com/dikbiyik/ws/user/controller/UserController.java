@@ -1,6 +1,9 @@
 package com.dikbiyik.ws.user.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,48 +14,58 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dikbiyik.ws.user.controller.contract.UserControllerContract;
 import com.dikbiyik.ws.user.dto.DeleteUserRequestDto;
+import com.dikbiyik.ws.user.dto.GetUserResponseDto;
 import com.dikbiyik.ws.user.dto.UpdateUserRequestDto;
+import com.dikbiyik.ws.user.dto.UpdateUserResponseDto;
 import com.dikbiyik.ws.user.dto.UserSaveRequestDto;
-import com.dikbiyik.ws.user.service.AppUserService;
-import com.dikbiyik.ws.generic.rest.GenericApiResponse;
+import com.dikbiyik.ws.user.dto.UserSaveResponseDto;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/v1.0/users")
+@RequiredArgsConstructor
 public class UserController {
     
-    @Autowired
-    private AppUserService userService;
+    private final UserControllerContract userControllerContract;
 
     @PostMapping
-    public GenericApiResponse saveUser(@RequestBody UserSaveRequestDto userSaveDtoRequest){
-        return new GenericApiResponse(200, "Success", "654488964513", userService.save(userSaveDtoRequest));
+    public ResponseEntity<UserSaveResponseDto> saveUser(@RequestBody UserSaveRequestDto userSaveDtoRequest){
+        UserSaveResponseDto response = userControllerContract.saveUser(userSaveDtoRequest);
+        return ResponseEntity.ok().body(response);
     }
 
     @GetMapping("/all")
-    public GenericApiResponse getAllUsers(){
-        return new GenericApiResponse(200, "Success", "516816", userService.getAllUsers());
+    public ResponseEntity<List<GetUserResponseDto>> getAllUsers(){
+        List<GetUserResponseDto> response = userControllerContract.getAllUsers();
+        return ResponseEntity.ok().body(response);
     }
 
     @GetMapping("/{id}")
-    public GenericApiResponse getUserById(@PathVariable Long id){
-        return new GenericApiResponse(200, "Success", "62618413", userService.getUserById(id));
+    public ResponseEntity<GetUserResponseDto> getUserById(@PathVariable Long id){
+        GetUserResponseDto response = userControllerContract.getUserById(id);
+        return ResponseEntity.ok().body(response);
     }
     
     @GetMapping
-    public GenericApiResponse getUserByUsername(@RequestParam String username){
-        return new GenericApiResponse(200, "Success", "516816", userService.getUserByUsername(username));
+    public ResponseEntity<GetUserResponseDto> getUserByUsername(@RequestParam String username){
+        GetUserResponseDto response = userControllerContract.getUserByUsername(username);
+        return ResponseEntity.ok().body(response);
+
     }
 
     @PutMapping("/{id}")
-    public GenericApiResponse updateUser(@PathVariable Long id, @RequestBody UpdateUserRequestDto updateUserRequestDto){
-        return new GenericApiResponse(200, "Success", "1658435", userService.updateUser(id, updateUserRequestDto));
+    public ResponseEntity<UpdateUserResponseDto> updateUser(@PathVariable Long id, @RequestBody UpdateUserRequestDto updateUserRequestDto){
+        UpdateUserResponseDto response = userControllerContract.updateUser(id, updateUserRequestDto);
+        return ResponseEntity.ok().body(response);
     }
 
     @DeleteMapping
-    public GenericApiResponse deleteUser(@RequestBody DeleteUserRequestDto deleteUserRequestDto){
-        userService.deleteUser(deleteUserRequestDto);
-        return new GenericApiResponse(200, "Success", "2186435413");
+    public ResponseEntity<String> deleteUser(@RequestBody DeleteUserRequestDto deleteUserRequestDto){
+        userControllerContract.deleteUser(deleteUserRequestDto);
+        return ResponseEntity.ok().body("User deleted");
     }
 
 }
