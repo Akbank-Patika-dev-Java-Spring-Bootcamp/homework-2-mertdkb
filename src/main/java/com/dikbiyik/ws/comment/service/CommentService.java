@@ -21,8 +21,6 @@ import com.dikbiyik.ws.user.repository.UserRepository;
 
 @Service
 public class CommentService extends BaseService<Comment, CommentRepository>{
-    
-    private final CommentMapper commentMapper;
 
     private final ProductRepository productRepository;
 
@@ -30,37 +28,36 @@ public class CommentService extends BaseService<Comment, CommentRepository>{
 
     public CommentService(CommentRepository commentRepository, CommentMapper commentMapper, ProductRepository productRepository, UserRepository userRepository){
         super(commentRepository);
-        this.commentMapper = commentMapper;
         this.productRepository = productRepository;
         this.userRepository = userRepository;
     }
 
-    public CommentPostResponseDto postComment(CommentPostRequestDto dtoRequest){
-        Product product = productRepository.findById(dtoRequest.productId()).orElseThrow();
-        User user = userRepository.findById(dtoRequest.userId()).orElseThrow();
+    public Comment saveComment(CommentPostRequestDto requestDto) {
+        Comment comment = new Comment();
+        comment.setCommentBody(requestDto.commentBody());
 
-        Comment comment = commentMapper.commentPostDtoRequestToComment(dtoRequest);
-        comment.setProduct(product);
+        User user = userRepository.findById(requestDto.userId()).orElseThrow();
         comment.setUser(user);
 
-        return commentMapper.commentToCommentPostDtoResponse(this.save(comment));
+        Product product = productRepository.findById(requestDto.productId()).orElseThrow();
+        comment.setProduct(product);
+
+        return super.save(comment);
     }
 
-    public void deleteComment(Long id){
-        this.deleteById(id);
-    }
 
     //users comments
-    public List<CommentGetResponseDto> getAllUserCommentsByUserId(Long id){
+    public List<Comment> getAllUserCommentsByUserId(Long id){
         User user = userRepository.findById(id).orElseThrow();
-        return commentMapper.commentsToCommentGetResponseDtos(user.getComments());
+        return user.getComments();
     }
 
     //products comment
-    public List<CommentGetResponseDto> getAllProductCommentsByProductId(Long id){
+    public List<Comment> getAllProductCommentsByProductId(Long id){
         Product product = productRepository.findById(id).orElseThrow();
-        return commentMapper.commentsToCommentGetResponseDtos(product.getComments());
+        return product.getComments();
     }
+
 
 
 }
