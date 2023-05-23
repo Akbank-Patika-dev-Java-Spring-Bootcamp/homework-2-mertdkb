@@ -1,5 +1,7 @@
 package com.dikbiyik.ws.user.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
@@ -15,5 +17,5 @@ public interface UserRepository extends JpaRepository<User, Long>{
     User findByUsername(@Param("username")String username);
 
     @Query("SELECT user FROM Appuser user WHERE user.username = :username AND user.phoneNumber = :phoneNumber")
-    User findByUsernameAndPhoneNumber(@Param("username")String username, @Param("phoneNumber") String phoneNumber);
+    Optional<User> findByUsernameAndPhoneNumber(@Param("username")String username, @Param("phoneNumber") String phoneNumber);
 }

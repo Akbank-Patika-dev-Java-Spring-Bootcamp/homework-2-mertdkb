@@ -1,9 +1,11 @@
 package com.dikbiyik.ws.user.controller.contract.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.dikbiyik.ws.exception.user.UserDataNotPairingException;
 import com.dikbiyik.ws.user.User;
 import com.dikbiyik.ws.user.controller.contract.UserControllerContract;
 import com.dikbiyik.ws.user.dto.DeleteUserRequestDto;
@@ -56,8 +58,11 @@ public class UserControllerContractImpl implements UserControllerContract {
 
     @Override
     public void deleteUser(DeleteUserRequestDto deleteUserRequestDto) {
-        User userInDb = appUserService.findByUsernameAndPhoneNumber(deleteUserRequestDto.username(), deleteUserRequestDto.phoneNumber());
-        appUserService.delete(userInDb);
+        Optional<User> userInDb = appUserService.findByUsernameAndPhoneNumber(deleteUserRequestDto.username(), deleteUserRequestDto.phoneNumber());
+        if(!userInDb.isPresent()){
+            throw new UserDataNotPairingException(deleteUserRequestDto.username() + " data and " + deleteUserRequestDto.phoneNumber() + " data are not matching with user");
+        }
+        appUserService.deleteById(userInDb.get().getId());
     }
 
 }

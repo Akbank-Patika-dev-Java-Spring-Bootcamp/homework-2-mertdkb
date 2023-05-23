@@ -1,5 +1,7 @@
 package com.dikbiyik.ws.user.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.dikbiyik.ws.base.BaseAdditionalFields;
@@ -42,7 +44,7 @@ public class AppUserService extends BaseService<User, UserRepository> {
         return userRepository.findByUsername(username);
     }
 
-    public User findByUsernameAndPhoneNumber(String username, String phoneNumber) {
+    public Optional<User> findByUsernameAndPhoneNumber(String username, String phoneNumber) {
         return userRepository.findByUsernameAndPhoneNumber(username, phoneNumber);
     }
 
